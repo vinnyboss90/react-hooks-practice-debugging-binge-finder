@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Episode from "./Components/Episode";
+import Episode from "./Episode";
 
 function SelectedShowContainer(props) {
-  const selectedSeason = useState(1);
+  const [selectedSeason, setSelectedSeason] = useState(1);
 
   function mapSeasons() {
     if (!!props.episodes) {
@@ -19,15 +19,15 @@ function SelectedShowContainer(props) {
   }
 
   function mapEpisodes() {
-    return props.episodes.map((e) => {
-      if (e.season == selectedSeason) {
-        return <Episode eachEpisode={e} key={e.id} />;
-      }
-    });
+    return props.episodes
+      .filter((e)=> e.season === parseInt(selectedSeason))
+      .map((e)=>{
+        return <Episode myEpisode={e} key={e.id} />
+      });
   }
 
   function handleSelectionChange(e) {
-    selectedSeason = e.target.value;
+    setSelectedSeason(e.target.value);
   }
 
   const { selectedShow } = props;
@@ -48,9 +48,9 @@ function SelectedShowContainer(props) {
   );
 }
 
-export SelectedShowContainer;
+export default SelectedShowContainer;
 
-Array.prototype.unique = function () {
+Array.unique = function () {
   const arr = [];
   for (let i = 0; i < this.length; i++) {
     if (!arr.includes(this[i])) {
